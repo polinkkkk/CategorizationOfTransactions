@@ -1,2 +1,2 @@
-#CategorizationOfTransactions
-Graphical application for automatically categorizing bank transactions using NLP
+# **CategorizationOfTransactions**
+## Graphical application for automatically categorizing bank transactions using NLP
