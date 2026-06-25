@@ -2,10 +2,7 @@ import pandas as pd
 import re
 
 
-def process_bank_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-
+def data_cleanup(lines):
     exact_headers = {
         "дата и время", "операции", "дата", "списания",
         "сумма в валюте", "сумма операции", "в валюте карты",
@@ -76,10 +73,6 @@ def process_bank_file(file_path):
 
     return pd.DataFrame(data)
 
-
-df = process_bank_file(r"C:\Users\HUAWEI\Downloads\транзакции.txt")
-
-
 def clean_for_ml(text):
     text = re.sub(r'[^а-яёa-z\s]', ' ', text, flags=re.IGNORECASE)
 
@@ -89,9 +82,15 @@ def clean_for_ml(text):
 
     return " ".join(text.split())
 
+file_path = r"C:\Users\HUAWEI\Downloads\транзакции.txt"
+with open(file_path, 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+df = data_cleanup(lines)
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 pd.set_option('display.max_colwidth', None)
 
-df['Очищенное_описание'] = df['Описание'].apply(clean_for_ml)
-print(df.head())
+df['Очищенное_описание'] = (df['Описание'].apply(clean_for_ml))
+df['Очищенное_описание'] = df['Очищенное_описание'].str.lower()
+print(df.to_string())
